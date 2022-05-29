@@ -1,0 +1,54 @@
+appDeployment:
+  name: app-deployment
+  labels: app
+  replicas: 3
+  image: 'underbedmonster/chromedino:1'
+  port: 5000
+  env:
+    redisName: REDIS_HOST
+    redisHost: $(MY_REDIS_MASTER_SERVICE_HOST)
+    passwordName: REDIS_PASSWORD
+    passwordValue: unbreakablepassword
+  healthPath: /health
+  readinessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 1
+  livenessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 1
+
+appclusteripService:
+  name: app-clusterip
+  labels: app
+  type: ClusterIP
+  port: 5000
+  protocol: TCP
+
+redisDeployment:
+  name: redis-deployment
+  labels: redis
+  strategyType: RollingUpdate
+  replicas: 2
+  container:
+    name: redis
+    image: 'redis:alpine'
+    port: 6379
+    protocol: TCP
+
+redisService:
+  name: redis-service
+  labels: redis
+  port: 6379
+
+ingress:
+  name: gateway-ingress
+  host: chrome-dino
+  path: /
+  httpPath: /
+  pathType: Prefix
+  serviceName: app-clusterip
+  port: 5000

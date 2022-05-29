@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appclusteripService.name }}
+  labels:
+    app: {{ .Values.appclusteripService.labels }}
+spec:
+  type: {{ .Values.appclusteripService.type }}
+  ports:
+  - port: {{ .Values.appclusteripService.port }}
+    targetPort: {{ .Values.appclusteripService.port }}
+    protocol: {{ .Values.appclusteripService.protocol }}
+  selector:
+    app: {{ .Values.appclusteripService.labels }}

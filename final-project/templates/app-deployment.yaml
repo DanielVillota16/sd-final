@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appDeployment.name }}
+  labels:
+    app: {{ .Values.appDeployment.labels }}
+spec:
+  replicas: {{ .Values.appDeployment.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appDeployment.labels }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appDeployment.labels }}
+    spec:
+      containers:
+      - name: {{ .Values.appDeployment.labels }}
+        image: {{ .Values.appDeployment.image }}
+        ports:
+          - containerPort: {{ .Values.appDeployment.port }}
+        env:
+          - name: {{ .Values.appDeployment.env.redisName }}
+            value: {{ .Values.appDeployment.env.redisHost }}
+          - name: {{ .Values.appDeployment.env.passwordName }}
+            value: {{ .Values.appDeployment.env.passwordValue }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.appDeployment.healthPath }}
+            port: {{ .Values.appDeployment.port }}
+          initialDelaySeconds: {{ .Values.appDeployment.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.appDeployment.readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.appDeployment.readinessProbe.timeoutSeconds }}
+          failureThreshold: {{ .Values.appDeployment.readinessProbe.failureThreshold }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.appDeployment.healthPath }}
+            port: {{ .Values.appDeployment.port }}
+          initialDelaySeconds: {{ .Values.appDeployment.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.appDeployment.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.appDeployment.livenessProbe.timeoutSeconds }}
+          failureThreshold: {{ .Values.appDeployment.livenessProbe.failureThreshold }}
