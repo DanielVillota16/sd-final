@@ -11,5 +11,5 @@ sleep 60
 # SMOKE TEST
 
 curl http://$(minikube ip)/highest
-curl http://$(minikube ip)/updatehighest/5142
+curl http://$(minikube ip)/updatehighest/16
 curl http://$(minikube ip)/highest
