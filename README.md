@@ -6,7 +6,9 @@ Web browser app that stores a value on a redis database through an API.
 
 The app is deployed on Kubernetes and packaged using Helm.
 
-The final Kubernetes arquitecture looks like this: 
+The final Kubernetes arquitecture looks somewhat like this:
+
+![k8s-arc](https://user-images.githubusercontent.com/47828441/171091245-f1de3919-147f-4737-a7b6-fe426d00f610.png)
 
 ---
 
